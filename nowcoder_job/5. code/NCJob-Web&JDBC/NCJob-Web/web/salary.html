@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>薪资统计分析</title>
+    <!-- 引入 echarts.min.js -->
+    <script src="static/echarts/echarts.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial;
+            padding: 10px;
+            background: #f1f1f1;
+        }
+
+        /* 头部标题 */
+        .header {
+            padding: 30px;
+            text-align: center;
+            background: white;
+        }
+
+        .header h1 {
+            font-size: 50px;
+        }
+
+        /* 导航条 */
+        .topnav {
+            overflow: hidden;
+            background-color: #E0A460;
+            text-indent: 175px;    /* 导航栏选项之间的间距  */
+            display: inline-block;
+            text-align: center;
+        }
+
+        /* 导航条链接 */
+        .topnav a {
+            float: left;
+            display: inline-block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        /* 链接颜色修改 */
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* 列后面清除浮动 */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* 底部 */
+        .footer {
+            padding: 20px;
+            text-align: center;
+            background: #ddd;
+            margin-top: 20px;
+        }
+
+        /* 响应式布局 - 屏幕尺寸小于 800px 时，两列布局改为上下布局 */
+        @media screen and (max-width: 800px) {
+            .leftcolumn, .rightcolumn {
+                width: 100%;
+                padding: 0;
+            }
+        }
+
+        /* 响应式布局 -屏幕尺寸小于 400px 时，导航等布局改为上下布局 */
+        @media screen and (max-width: 400px) {
+            .topnav a {
+                float: none;
+                width: 100%;
+            }
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="header" align="center">
+    <h1>NowCoder招聘岗位可视化统计分析平台</h1>
+    <h2>薪资统计分析</h2>
+</div>
+
+<div class="topnav">
+    <a href="http://localhost:8080/NCJob/index.jsp" style="float:left">首页</a>
+    <a href="http://localhost:8080/NCJob/CityPosCount.html">岗位数量统计分析</a>
+    <a href="http://localhost:8080/NCJob/edu.html">学历要求统计分析</a>
+    <a href="http://localhost:8080/NCJob/salary.html">薪资统计分析</a>
+    <a href="http://localhost:8080/NCJob/feedback.html" style="float:right">反馈评估</a>
+</div>
+
+<div class="row">
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 600px;height:400px; float: left"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '实习岗位薪资前十公司（千元/月）'
+            },
+            tooltip: {},
+            legend: {
+                show:true,
+                left:"70%",
+                data:['薪资（千元/月）']
+            },
+            xAxis: {
+                data: ["好大夫在线","字节跳动","搜狐","旺宏微电子","星球在线","爱钛技术","美团","链家上海分公司1895",
+                    "链家上海分公司1895", "平安科技"]
+            },
+            yAxis: {
+            },
+            series: [{
+                name: '薪资（千元/月）',
+                type: 'bar',
+                data: [9.8,9.8,9.8,9.8,9.8,9.8,9.8,9.8,9.6,9.5]
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+
+    <div id="main1" style="width: 600px;height:400px; float: right"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main1'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '非实习岗位薪资前十公司（万元/月）'
+            },
+            tooltip: {},
+            legend: {
+                show:true,
+                left:"70%",
+                data:['薪资（万元/月）']
+            },
+            xAxis: {
+                data: ["字节跳动","字节跳动","北京泰铼投资","华为","瀚博半导体(上海)有限公司","字节跳动",
+                    "成都华为技术有限公司","美团", "瀚博半导体(上海)有限公司", "SmartX"]
+            },
+            yAxis: {
+            },
+            series: [{
+                name: '薪资（万元/月）',
+                type: 'bar',
+                data: [6.3,5.7,5.6,5.3,5.3,5.0,5.0,5.0,4.9,4.7]
+            }]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+
+    <div id="main2" style="width: 600px;height:400px; float: left"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main2'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '每个实习岗位的平均薪资',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left'
+            },
+            series: [
+                {
+                    name: '单位：千元/月',
+                    type: 'pie',
+                    radius: '50%',
+                    data: [
+                        { value: 8.31, name: '开发岗' },
+                        { value: 8.31, name: '算法岗' },
+                        { value: 7.96, name: '工程师' },
+                        { value: 7.28, name: '数据岗' },
+                        { value: 6.79, name: '其他' },
+                        { value: 5.2, name: '运营岗' },
+                        { value: 4.88, name: '策划岗' },
+                        { value: 4.88, name: '培训岗' },
+                        { value: 4.87, name: '设计岗' }
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+
+    <div id="main3" style="width: 600px;height:400px; float: right"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main3'));
+        // 指定图表的配置项和数据
+        var option = {
+            title: {
+                text: '每个非实习岗位的平均薪资',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left'
+            },
+            series: [
+                {
+                    name: '单位：万元/月',
+                    type: 'pie',
+                    radius: '50%',
+                    data: [
+                        { value: 2.15, name: '算法岗' },
+                        { value: 2.12, name: '开发岗' },
+                        { value: 1.83, name: '工程师' },
+                        { value: 1.74, name: '数据岗' },
+                        { value: 1.58, name: '设计岗' },
+                        { value: 1.41, name: '其他' },
+                        { value: 1.28, name: '策划岗' },
+                        { value: 1.24, name: '运营岗' },
+                        { value: 1.11, name: '培训岗' }
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+
+
+
+</div>
+
+
+<div class="footer" align="center">
+    <p>
+        Copyright@lbj_fosu | 粤ICP备********号
+    </p>
+</div>
+
+</body>
+</html>
