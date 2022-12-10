@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计各个城市二手房优势的各类比例</title>
+    <!-- 引入 echarts.min.js -->
+    <script src="static/echarts/echarts.min.js"></script>
+
+</head>
+<body>
+
+<!--city '采光比例', '交通便利', '电梯覆盖率', '精装房', '景观好', '近公园/社区'-->
+<!--上海	0.2134	0.2858	0.0811	0.1813	0.0240	0.0551-->
+<!--北京	0.1780	0.1016	0.1110	0.2073	0.0034	0.0437-->
+<!--广州	0.1801	0.1278	0.1352	0.0963	0.0111	0.0356-->
+<!--深圳	0.1325	0.2183	0.0295	0.1848	0.0184	0.0681-->
+
+<div id="main" style="width: 600px;height:400px; float: left"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'), 'dark');
+    // 指定图表的配置项和数据
+    var option;
+
+    // data: ["上海","北京","广州","深圳"]
+    setTimeout(function () {
+        option = {
+            title: {
+                text: '统\n计\n各\n个\n城\n市\n二\n手\n房\n优\n势\n的\n各\n类\n比\n例',
+                top: '10%'
+            },
+            legend: {
+            },
+            tooltip: {
+                trigger: 'axis',
+                showContent: false
+            },
+            dataset: {
+                source: [
+                    ['城市', '采光好', '交通便利', '有电梯', '精装房', '景观好', '近公园/社区'],
+                    ['上海', 0.2134, 0.2858,	0.0811,	0.1813,	0.0240,	0.0551],
+                    ['北京', 0.1780,	0.1016,	0.1110,	0.2073,	0.0034,	0.0437],
+                    ['广州', 0.1801, 0.1278,	0.1352,	0.0963,	0.0111,	0.0356],
+                    ['深圳', 0.1325,	0.2183,	0.0295,	0.1848,	0.0184,	0.0681]
+                ]
+            },
+            xAxis: {
+                type: 'category',
+                name: '优势',
+                axisLabel:{interval: 0}
+            },
+            yAxis: {
+                gridIndex: 0,
+                name: '比例'
+            },
+            grid: {
+                top: '55%'
+            },
+            series: [
+                {
+                    type: 'line',
+                    smooth: true,
+                    seriesLayoutBy: 'row',
+                    emphasis: { focus: 'series' }
+                },
+                {
+                    type: 'line',
+                    smooth: true,
+                    seriesLayoutBy: 'row',
+                    emphasis: { focus: 'series' }
+                },
+                {
+                    type: 'line',
+                    smooth: true,
+                    seriesLayoutBy: 'row',
+                    emphasis: { focus: 'series' }
+                },
+                {
+                    type: 'line',
+                    smooth: true,
+                    seriesLayoutBy: 'row',
+                    emphasis: { focus: 'series' }
+                },
+                {
+                    type: 'pie',
+                    id: 'pie',
+                    radius: '30%',
+                    center: ['50%', '25%'],
+                    emphasis: {
+                        focus: 'self'
+                    },
+                    label: {
+                        formatter: '{b}: {@采光好} ({d}%)'
+                    },
+                    encode: {
+                        itemName: '城市',
+                        value: '采光好',
+                        tooltip: '采光好'
+                    }
+                }
+            ]
+        };
+        myChart.on('updateAxisPointer', function (event) {
+            const xAxisInfo = event.axesInfo[0];
+            if (xAxisInfo) {
+                const dimension = xAxisInfo.value + 1;
+                myChart.setOption({
+                    series: {
+                        id: 'pie',
+                        label: {
+                            formatter: '{b}: {@[' + dimension + ']} ({d}%)'
+                        },
+                        encode: {
+                            value: dimension,
+                            tooltip: dimension
+                        }
+                    }
+                });
+            }
+        });
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    });
+</script>
+
+
+</body>
+</html>

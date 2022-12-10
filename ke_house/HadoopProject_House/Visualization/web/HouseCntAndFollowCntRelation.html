@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计各个城市二手房数量和关注人数的关系</title>
+    <!-- 引入 echarts.min.js -->
+<!--    <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.0/dist/echarts.min.js"></script>-->
+    <script type="text/javascript" src="static/echarts@5.4.0/echarts.min.js"></script>
+<!--    <script src="static/echarts/echarts.min.js"></script>-->
+
+</head>
+<body>
+
+<!--关注数：-->
+<!--上海    15472-->
+<!--北京    38988-->
+<!--广州    8687-->
+<!--深圳    9723-->
+<!--数量：-->
+<!--上海    2995-->
+<!--北京    2972-->
+<!--广州    2699-->
+<!--深圳    2982-->
+
+<div id="main" style="width: 600px;height:400px; float: left"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'), 'dark');
+    // 指定图表的配置项和数据
+    var app = {};
+    var option;
+    var categoryData = ['上海', '北京', '广州', '深圳'];
+    var errorData = [15472, 38988, 8687, 9723];
+    var barData = [2995, 2972, 2699, 2982];
+
+    option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        title: {
+            text: '统计各个城市二手房数量和关注人数的关系'
+        },
+        legend: {
+            data: ['二手房数量', '关注人数'],
+            top: '7%',
+            right: '10%'
+        },
+        dataZoom: [
+            {
+                type: 'slider',
+                start: 0,
+                end: 100
+            },
+            {
+                type: 'inside',
+                start: 0,
+                end: 100
+            }
+        ],
+        xAxis: {
+            data: categoryData
+        },
+        yAxis: {},
+        series: [
+            {
+                type: 'bar',
+                name: '二手房数量',
+                data: barData,
+                itemStyle: {
+                    color: '#77bef7'
+                }
+            },
+            {
+                type: 'custom',
+                name: '关注人数',
+                itemStyle: {
+                    borderWidth: 1.5
+                },
+                renderItem: function (params, api) {
+                    var xValue = api.value(0);
+                    var highPoint = api.coord([xValue, api.value(1)]);
+                    var lowPoint = api.coord([xValue, api.value(2)]);
+                    var halfWidth = api.size([1, 0])[0] * 0.1;
+                    var style = api.style({
+                        stroke: api.visual('color'),
+                        fill: undefined
+                    });
+                    return {
+                        type: 'group',
+                        children: [
+                            {
+                                type: 'line',
+                                transition: ['shape'],
+                                shape: {
+                                    x1: highPoint[0] - halfWidth,
+                                    y1: highPoint[1],
+                                    x2: highPoint[0] + halfWidth,
+                                    y2: highPoint[1]
+                                },
+                                style: style
+                            },
+                            {
+                                type: 'line',
+                                transition: ['shape'],
+                                shape: {
+                                    x1: highPoint[0],
+                                    y1: highPoint[1],
+                                    x2: lowPoint[0],
+                                    y2: lowPoint[1]
+                                },
+                                style: style
+                            },
+                            {
+                                type: 'line',
+                                transition: ['shape'],
+                                shape: {
+                                    x1: lowPoint[0] - halfWidth,
+                                    y1: lowPoint[1],
+                                    x2: lowPoint[0] + halfWidth,
+                                    y2: lowPoint[1]
+                                },
+                                style: style
+                            }
+                        ]
+                    };
+                },
+                encode: {
+                    x: 0,
+                    y: [1, 2]
+                },
+                data: errorData,
+                z: 100
+            }
+        ]
+    };
+
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+
+
+</body>
+</html>

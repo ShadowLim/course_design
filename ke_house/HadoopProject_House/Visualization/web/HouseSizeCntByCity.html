@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计二手房面积区间范围的比例</title>
+    <!-- 引入 echarts.min.js -->
+    <script src="static/echarts/echarts.min.js"></script>
+</head>
+<body>
+
+<!--上海    100~200 0.15158597662771287-->
+<!--上海    200~300 0.002671118530884808-->
+<!--上海    300~500 6.67779632721202E-4-->
+<!--上海    <100    0.8450751252086811-->
+<!--北京    100~200 0.1756393001345895-->
+<!--北京    200~300 0.0026917900403768506-->
+<!--北京    300~500 3.3647375504710633E-4-->
+<!--北京    <100    0.8213324360699865-->
+<!--广州    100~200 0.2578732864023712-->
+<!--广州    200~300 0.00889218228973694-->
+<!--广州    300~500 0.0014820303816228233-->
+<!--广州    <100    0.731752500926269-->
+<!--深圳    100~200 0.17069081153588195-->
+<!--深圳    200~300 0.003688799463447351-->
+<!--深圳    300~500 3.3534540576794097E-4-->
+<!--深圳    <100    0.8252850435949027-->
+
+<div id="main" style="width: 600px;height:400px; float: left"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'), 'dark');
+    // 指定图表的配置项和数据
+    var option;
+
+    option = {
+        title: {
+            text: '统计二手房面积区间范围的数量'
+        },
+        legend: {
+            top: '7%',
+            data: ['上海', '北京', '广州', '深圳']
+            // data: ['<100', '100~200', '200~300', '300~500']
+        },
+        xAxis: {
+            name: '面积区间',
+            type: 'category',
+            boundaryGap: false
+        },
+        yAxis: {
+            name: '比例',
+            type: 'value',
+            boundaryGap: [0, '30%']
+        },
+        grid: {
+            right: '12%',
+            bottom: '3%',
+            containLabel: true
+        },
+        visualMap: {
+            type: 'piecewise',
+            show: false,
+            dimension: 0,
+            seriesIndex: 0,
+            pieces: [
+                {
+                    gt: 1,
+                    lt: 3,
+                    color: 'rgba(0, 0, 180, 0.4)'
+                },
+                {
+                    gt: 5,
+                    lt: 7,
+                    color: 'rgba(0, 0, 180, 0.4)'
+                }
+            ]
+        },
+        series: [
+            {
+                type: 'line',
+                name: '上海',
+                smooth: 0.6,
+                symbol: 'none',
+                // seriesLayoutBy: 'row',
+                // emphasis: { focus: 'series' },
+                lineStyle: {
+                    color: '#5470C6',
+                    width: 5
+                },
+                markLine: {
+                    symbol: ['none', 'none'],
+                    label: { show: false },
+                    data: [{ xAxis: 1 }, { xAxis: 3 }, { xAxis: 5 }, { xAxis: 7 }]
+                },
+                areaStyle: {},
+                data: [
+                    ['200~300', 0.002671118530884808 * 2995],
+                    ['100~200', 0.15158597662771287 * 2995],
+                    ['<100', 0.8450751252086811 * 2995],
+                    ['300~500', 6.67779632721202E-4 * 2995]
+                ]
+            },
+            {
+                type: 'line',
+                name: '北京',
+                smooth: 0.6,
+                symbol: 'none',
+                lineStyle: {
+                    color: 'red',
+                    width: 5
+                },
+                markLine: {
+                    symbol: ['none', 'none'],
+                    label: { show: false },
+                    data: [{ xAxis: 1 }, { xAxis: 3 }, { xAxis: 5 }, { xAxis: 7 }]
+                },
+                areaStyle: {},
+                data: [
+                    ['200~300', 0.0026917900403768506 * 2972],
+                    ['100~200', 0.1756393001345895 * 2972],
+                    ['<100', 0.8213324360699865 * 2972],
+                    ['300~500', 3.3647375504710633E-4 * 2972]
+                ]
+            },
+            {
+                type: 'line',
+                name: '广州',
+                smooth: 0.6,
+                symbol: 'none',
+                lineStyle: {
+                    color: 'red',
+                    width: 5
+                },
+                markLine: {
+                    symbol: ['none', 'none'],
+                    label: { show: false }
+                },
+                areaStyle: {},
+                data: [
+                    ['200~300', 0.00889218228973694 * 2699],
+                    ['100~200', 0.2578732864023712 * 2699],
+                    ['<100', 0.731752500926269 * 2699],
+                    ['300~500', 0.0014820303816228233 * 2699]
+                ]
+            },
+            {
+                type: 'line',
+                name: '深圳',
+                smooth: 0.6,
+                symbol: 'none',
+                lineStyle: {
+                    color: 'yellow',
+                    width: 5
+                },
+                markLine: {
+                    symbol: ['none', 'none'],
+                    label: { show: false }
+                },
+                areaStyle: {},
+                data: [
+                    ['200~300', 0.003688799463447351 * 2982],
+                    ['100~200', 0.17069081153588195 * 2982],
+                    ['<100', 0.8252850435949027 * 2982],
+                    ['300~500', 3.3534540576794097E-4 * 2982]
+                ]
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计各个城市二手房规格的各类比例</title>
+    <!-- 引入 echarts.min.js -->
+<!--    <script src="static/echarts/echarts.min.js"></script>-->
+    <script type="text/javascript" src="static/echarts@5.4.0/echarts.min.js"></script>
+</head>
+<body>
+
+
+<div id="main" style="width: 800px;height:500px; float: left"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'), 'dark');
+    // 指定图表的配置项和数据
+    var option;
+
+    // Generate data
+    let category = ['1室0厅', '1室1厅', '1室2厅',
+        '2室0厅', '2室1厅', '2室2厅',
+        '3室0厅', '3室1厅', '3室2厅', '3室3厅',
+        '4室1厅', '4室2厅', '4室3厅', '4室4厅',
+        '5室1厅', '5室2厅', '5室3厅',
+        '6室1厅', '6室2厅', '7室3厅', '9室1厅' ];
+
+    let dottedBase = +new Date();
+    let lineData = [0.0330550918196995,
+        0.2036727879799666,
+        0.009348914858096828,
+        0.021368948247078464,
+        0.3662771285475793,
+        0.1666110183639399,
+        0.001001669449081803,
+        0.05342237061769616,
+        0.12954924874791318,
+        3.33889816360601E-4,
+        0,
+        0.013689482470784642,
+        3.33889816360601E-4,
+        0,
+        3.33889816360601E-4,
+        6.67779632721202E-4, 0,
+        0, 3.33889816360601E-4,
+        0, 0];
+    let barData = [0.019515477792732168,
+        0.16150740242261102,
+        0.0023553162853297443,
+        0.002018842530282638,
+        0.5114401076716016,
+        0.06022880215343203,
+        0.002018842530282638,
+        0.15814266487213996,
+        0.06796769851951548,
+        0,
+        3.3647375504710633E-4,
+        0.004037685060565276,
+        0.009421265141318977, 0,
+        3.3647375504710633E-4,
+        6.729475100942127E-4, 0,
+        0, 0, 0, 0
+    ];
+    let barData1 = [0.016672841793256763,
+        0.058169692478695814,
+        0.0011115227862171174,
+        7.410151908114116E-4,
+        0.25861430159318266,
+        0.1344942571322712,
+        0,
+        0.13004816598740274,
+        0.30344572063727304,
+        3.705075954057058E-4,
+        0.010744720266765468,
+        0.07187847350870692,
+        3.705075954057058E-4,
+        0,
+        0.0011115227862171174,
+        0.010003705075954057, 0,
+        0,
+        0.001852537977028529,
+        3.705075954057058E-4,
+        0
+    ];
+    let lineData1 = [0.047283702213279676,
+        0.10596914822266935,
+        0.001676727028839705,
+        0,
+        0.1891348088531187,
+        0.1334674714956405,
+        3.3534540576794097E-4,
+        0.09825620389000671,
+        0.27699530516431925,
+        0,
+        0.018443997317236754,
+        0.10663983903420524,
+        6.706908115358819E-4,
+        3.3534540576794097E-4,
+        0.0026827632461435278,
+        0.015761234071093227,
+        6.706908115358819E-4,
+        3.3534540576794097E-4,
+        0.001006036217303823,
+        0,
+        3.3534540576794097E-4];
+
+    // option
+    option = {
+        title: {
+            text: '统计各个城市二手房规格的各类比例'
+        },
+        backgroundColor: '#0f375f',
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            data: ['上海', '北京', '广州', '深圳'],
+            top: '7%',
+            right: '10%',
+            textStyle: {
+                color: '#ccc'
+            }
+        },
+        xAxis: {
+            name: '房子规格',
+            data: category,
+            axisLine: {
+                lineStyle: {
+                    color: '#ccc'
+                },
+                show: true,
+                interval: 0
+            },
+            axisLabel: {
+                rotate: 40
+            }
+        },
+        yAxis: {
+            name: '比例',
+            splitLine: { show: false },
+            axisLine: {
+                lineStyle: {
+                    color: '#ccc'
+                }
+            }
+        },
+        series: [
+            {
+                name: '上海',
+                type: 'line',
+                smooth: true,
+                showAllSymbol: true,
+                symbol: 'emptyCircle',
+                symbolSize: 15,
+                data: lineData
+            },
+            {
+                name: '北京',
+                type: 'bar',
+                barWidth: 10,
+                itemStyle: {
+                    borderRadius: 5,
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: '#14c8d4' },
+                        { offset: 1, color: '#43eec6' }
+                    ])
+                },
+                data: barData
+            },
+            {
+                name: '广州',
+                // type: 'funnel',
+                type: 'bar',
+                barGap: '-100%',
+                barWidth: 10,
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: 'rgba(20,200,212,0.5)' },
+                        { offset: 0.2, color: 'rgba(20,200,212,0.2)' },
+                        { offset: 1, color: 'rgba(20,200,212,0)' }
+                    ])
+                },
+                z: -12,
+                data: barData1
+            },
+            {
+                name: '深圳',
+                // type: 'lines',
+                type: 'pictorialBar',
+                symbol: 'rect',
+                itemStyle: {
+                    color: '#0f375f'
+                },
+                symbolRepeat: true,
+                symbolSize: [12, 4],
+                symbolMargin: 1,
+                z: -10,
+                data: lineData1
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+
+
+</body>
+</html>
