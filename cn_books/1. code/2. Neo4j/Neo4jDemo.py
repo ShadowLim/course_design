@@ -245,7 +245,7 @@ def menu() :
 
 if __name__ == '__main__':
     # 连接Neo4j数据库输入地址、用户名、密码
-    url = 'bolt://192.168.149.134:7687'
+    url = 'bolt://10.125.0.15:7687'
     usr = 'neo4j'
     key = '123456'
     graph = Graph(url, auth=(usr, key))
