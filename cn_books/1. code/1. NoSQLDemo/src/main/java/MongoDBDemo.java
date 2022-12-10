@@ -359,7 +359,7 @@ public class MongoDBDemo {
 
     public static void init() {
         try {
-            client = new MongoClient("192.168.149.134");
+            client = new MongoClient("10.125.0.15");
 //            client = new MongoClient("localhost");
             db = client.getDatabase(dbName);
             collection = db.getCollection(collectionName);
