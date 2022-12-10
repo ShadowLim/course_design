@@ -389,7 +389,7 @@ public class OperateHBase {
      */
     public static void init() {
         configuration = HBaseConfiguration.create();
-        configuration.set("hbase.rootdir","hdfs://192.168.149.134:9000/hbase");
+        configuration.set("hbase.rootdir","hdfs://10.125.0.15:9000/hbase");
 //        configuration.set("hbase.rootdir","hdfs://localhost:9000/hbase");
         try {
             connection = ConnectionFactory.createConnection(configuration);
