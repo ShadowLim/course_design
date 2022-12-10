@@ -5,9 +5,9 @@ import java.util.*;
 
 public class RedisDemo {
 //    private static String HOST = "localhost";
-    private static String HOST = "192.168.149.134";
+    private static String HOST = "10.125.0.15";
     private static int PORT = 6379;
-    private static String PWD = "123456";
+    private static String PWD = "redis_password";
     private static Jedis jedis = null;
     private static JedisPool jedisPool = null;
 
