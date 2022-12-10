@@ -23,7 +23,7 @@
 <configuration>
     <property>
  	<name>hbase.rootbit</name>
-	<value>hdfs://192.168.149.134:9000/hbase-1.1.5</value>
+	<value>hdfs://10.125.0.15:9000/hbase-1.1.5</value>
     </property>
     <property>
         <name>hbase.cluster.distributed</name>
@@ -31,6 +31,6 @@
     </property>
     <property>
         <name>hbase.zookeeper.quorum</name>
-        <value>192.168.149.134</value>
+        <value>10.125.0.15</value>
     </property>
 </configuration>
