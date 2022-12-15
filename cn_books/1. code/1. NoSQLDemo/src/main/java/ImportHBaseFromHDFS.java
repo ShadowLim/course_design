@@ -19,7 +19,7 @@ public class ImportHBaseFromHDFS {
 
     public static void main(String[] args) throws Exception {
         Configuration conf = HBaseConfiguration.create();
-//         conf.set("hbase.zookeeper.quorum", "192.168.149.134:2181");
+//         conf.set("hbase.zookeeper.quorum", "10.125.0.15:2181");
 
         conf.set(TableOutputFormat.OUTPUT_TABLE, "tb_books");
 //        conf.set(TableOutputFormat.OUTPUT_TABLE, "books_tmp");
@@ -34,8 +34,8 @@ public class ImportHBaseFromHDFS {
         System.out.println("导入数据的id为：");
         job.setReducerClass(HdfsToHBaseReducer.class);
 
-        FileInputFormat.addInputPath(job, new Path("hdfs://192.168.149.134:9000/books_cn/tb_book.txt"));
-//        FileInputFormat.addInputPath(job, new Path("hdfs://192.168.149.134:9000/books_cn/test.txt"));
+        FileInputFormat.addInputPath(job, new Path("hdfs://10.125.0.15:9000/books_cn/tb_book.txt"));
+//        FileInputFormat.addInputPath(job, new Path("hdfs://10.125.0.15:9000/books_cn/test.txt"));
         job.setOutputFormatClass(TableOutputFormat.class);
 
         job.waitForCompletion(true);
