@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计售卖商品数量前10的店铺</title>
+    <!-- 引入 echarts.min.js -->
+    <script src="./statics/echarts.min.js"></script>
+
+</head>
+<body>
+<div id="main" style="width: 600px;height:400px; float: left"></div>
+<script type="text/javascript">
+    var chartDom = document.getElementById('main');
+    var myChart = echarts.init(chartDom);
+
+    const builderJson = {
+        all: 500,
+        charts: {
+
+        },
+        components: {
+            壳比家: 472,
+            仪宝严选: 256,
+            Yvette薏凡特官方旗舰店: 115,
+            江和运动服饰店: 97,
+            斯凯奇泉州专卖店: 68,
+            法茜运动户外旗舰店: 68,
+            再变美妆旗舰店: 105,
+            ZRZR旗舰店: 88,
+            Myon1y麦欧丽美妆旗舰店: 63,
+            倾城美美妆专营店: 62
+        },
+        ie: 472
+    };
+    const downloadJson = {
+        'echarts.min.js': 17365,
+        'echarts.simple.min.js': 4079,
+        'echarts.common.min.js': 6929,
+        'echarts.js': 14890
+    };
+    const themeJson = {
+        '3C数码': 728,
+        '美妆': 318,
+        '运动户外': 344
+    };
+    const waterMarkText = '';
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = canvas.height = 100;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.globalAlpha = 0.08;
+    ctx.font = '30px Microsoft Yahei';
+    ctx.translate(50, 50);
+    ctx.rotate(-Math.PI / 4);
+    ctx.fillText(waterMarkText, 0, 0);
+    option = {
+        backgroundColor: {
+            type: 'pattern',
+            image: canvas,
+            repeat: 'repeat'
+        },
+        tooltip: {},
+        title: [
+            {
+                text: '售卖商品数量前10的店铺展示',
+                subtext:
+                    '总计 ' +
+                    Object.keys(themeJson).reduce(function (all, key) {
+                        return all + themeJson[key];
+                    }, 0),
+                left: '50%',
+                top: '5%',
+                textAlign: 'center'
+            }
+        ],
+        grid: [
+            {
+                top: 50,
+                width: '50%',
+                bottom: '45%',
+                left: 10,
+                containLabel: true
+            },
+            {
+                top: '15%',
+                width: '50%',
+                bottom: 10,
+                left: 15,
+                containLabel: true
+            }
+        ],
+        xAxis: [
+            {
+                type: 'value',
+                max: builderJson.all,
+                splitLine: {
+                    show: false
+                }
+            },
+            {
+                type: 'value',
+                max: builderJson.all,
+                gridIndex: 1,
+                splitLine: {
+                    show: false
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: 'category',
+                data: Object.keys(builderJson.charts),
+                axisLabel: {
+                    interval: 0,
+                    rotate: 30
+                },
+                splitLine: {
+                    show: false
+                }
+            },
+            {
+                gridIndex: 1,
+                type: 'category',
+                data: Object.keys(builderJson.components),
+                axisLabel: {
+                    interval: 0,
+                    rotate: 30
+                },
+                splitLine: {
+                    show: false
+                }
+            }
+        ],
+        series: [
+            {
+                type: 'bar',
+                stack: 'chart',
+                z: 3,
+                label: {
+                    position: 'right',
+                    show: true
+                },
+                data: Object.keys(builderJson.charts).map(function (key) {
+                    return builderJson.charts[key];
+                })
+            },
+            {
+                type: 'bar',
+                stack: 'chart',
+                silent: true,
+                itemStyle: {
+                    color: '#eee'
+                },
+                data: Object.keys(builderJson.charts).map(function (key) {
+                    return builderJson.all - builderJson.charts[key];
+                })
+            },
+            {
+                type: 'bar',
+                stack: 'component',
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                z: 3,
+                label: {
+                    position: 'right',
+                    show: true
+                },
+                data: Object.keys(builderJson.components).map(function (key) {
+                    return builderJson.components[key];
+                })
+            },
+            {
+                type: 'pie',
+                radius: [0, '42%'],
+                center: ['72%', '50%'],
+                data: Object.keys(themeJson).map(function (key) {
+                    return {
+                        name: key.replace('.js', ''),
+                        value: themeJson[key]
+                    };
+                })
+            }
+        ]
+    };
+
+    option && myChart.setOption(option);
+    </script>
+
+</body>
+</html>

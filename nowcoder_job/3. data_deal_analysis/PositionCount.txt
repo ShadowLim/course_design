@@ -1,0 +1,306 @@
+city	count
+三亚	476
+三明	3
+上海	11687
+东莞	85
+东营	6
+中山	6
+临沂	6
+丹东	90
+乌海	256
+乌鲁木齐	3
+乐山	3
+九江	9
+云浮	3
+佛山	18
+佳木斯	3
+保定	15
+兰州	15
+内江	3
+凉山彝族自治州	3
+包头	60
+北京	13505
+十堰	3
+南京	5491
+南充	3
+南宁	33
+南昌	15
+南沙开发区	3
+南通	54
+即墨	6
+厦门	5454
+台北	3
+台州	3
+合肥	27
+吉林	3
+哈尔滨	18
+唐山	329
+嘉兴	3
+城阳	6
+大同	281
+大连	24
+天津	73
+太原	84
+威海	6
+孝感	3
+宁波	19
+安顺	6
+宜宾	3
+巴中	3
+常州	39
+常德	3
+平度	6
+广元	3
+广安	3
+广州	7058
+张家口	63
+徐州	9
+德州	6
+德阳	3
+忻州	78
+惠州	6
+成都	7251
+扬州	36
+承德	92
+抚顺	78
+揭阳	6
+攀枝花	3
+无锡	104
+日照	6
+昆明	18
+晋中	30
+晋城	505
+朔州	60
+本溪	105
+杭州	7556
+枣庄	6
+柳州	9
+梅州	6
+武汉	5510
+汕头	12
+汕尾	6
+江门	6
+沈阳	27
+河源	6
+泉州	2
+泰安	9
+泰州	3
+泸州	3
+洛阳	3
+济南	45
+济宁	6
+海口	42
+海阳	6
+淄博	9
+淮南	15
+深圳	8729
+清远	15
+温州	3
+湖州	9
+湛江	6
+滨州	6
+潍坊	6
+潮州	6
+烟台	12
+玉林	12
+珠海	204
+甘孜藏族自治州	3
+眉山	3
+石家庄	81
+福州	47
+秦皇岛	533
+绍兴	3
+绵阳	3
+聊城	6
+肇庆	6
+胶南	6
+胶州	6
+自贡	3
+苏州	302
+茂名	3
+荆门	3
+莱芜	6
+莱西	6
+菏泽	6
+衡水	15
+西安	4726
+贵阳	24
+资阳	3
+赤峰	385
+达州	3
+运城	135
+通辽	470
+遂宁	3
+邢台	304
+邯郸	449
+郑州	27
+鄂尔多斯	75
+重庆	588
+锦州	18
+长春	36
+长沙	57
+长治	382
+阜新	15
+阳江	6
+阳泉	501
+阿坝藏族羌族自治州	3
+雅安	3
+青岛	208
+韶关	6
+香港	18
+黄冈	3
+黄岛	6
+齐齐哈尔	3
+
+ { name: '三亚', value:476},
+  { name: '三明', value:3 },
+  { name: '上海', value:11687 },
+  { name: '东莞', value:85 },
+  { name: '东营', value:6 },
+  { name: '中山', value:6 },
+  { name: '临沂', value:6 },
+  { name: '丹东', value:90 },
+  { name: '乌海', value:256 },
+  { name: '乌鲁木齐', value: 3 },
+  { name: '乐山	', value: 3 },
+  { name: '九江	', value: 9 },
+  { name: '云浮	', value: 3 },
+  { name: '佛山	', value: 18 },
+  { name: '佳木斯	', value: 3 },
+  { name: '保定	', value: 15 },
+  { name: '兰州	', value: 15 },
+  { name: '内江	', value: 3 },
+  { name: '凉山彝族自治州', value: 3},
+  { name: '包头', value: 60 },
+  { name: '北京', value: 13505},
+  { name: '十堰', value:3 },
+  { name: '南京', value:5491 },
+  { name: '南充', value:3 },
+  { name: '南宁', value:33 },
+  { name: '南昌', value:15 },
+  { name: '南沙开发区', value: 3},
+  { name: '南通', value: 54},
+  { name: '即墨', value: 6},
+  { name: '厦门', value: 5454},
+  { name: '台北', value: 3},
+  { name: '台州', value: 3},
+  { name: '合肥', value: 27},
+  { name: '吉林', value: 3},
+  { name: '哈尔', value: 18},
+  { name: '唐山', value: 329},
+  { name: '嘉兴', value: 3},
+  { name: '城阳', value: 6},
+  { name: '大同', value: 281},
+  { name: '大连', value: 24},
+  { name: '天津', value: 73},
+  { name: '太原', value: 84},
+  { name: '威海', value: 6},
+  { name: '孝感', value: 3},
+  { name: '宁波', value: 19},
+  { name: '安顺', value: 6},
+  { name: '宜宾', value: 3},
+  { name: '巴中', value: 3},
+  { name: '常州', value: 39},
+  { name: '常德', value: 3},
+  { name: '平度', value: 6},
+  { name: '广元', value: 3},
+  { name: '广安', value: 3},
+  { name: '广州', value: 7058},
+  { name: '张家口', value:6337},
+  { name: '徐州', value: 9},
+  { name: '德州', value: 6},
+  { name: '德阳', value: 3},
+  { name: '忻州', value: 78},
+  { name: '惠州', value: 6},
+  { name: '成都', value: 7251},
+  { name: '扬州', value: 36},
+  { name: '承德', value:92},
+  { name: '抚顺', value:78},
+  { name: '揭阳', value:6},
+  { name: '攀枝花', value:3},
+  { name: '无锡', value:104},
+  { name: '日照', value:6},
+  { name: '昆明', value:18},
+  { name: '晋中', value:30},
+  { name: '晋城', value:505},
+  { name: '朔州', value:60},
+  { name: '本溪', value:105},
+  { name: '杭州', value:7556},
+  { name: '枣庄', value:6},
+  { name: '柳州', value:9},
+  { name: '梅州', value:6},
+  { name: '武汉', value:5510},
+  { name: '汕头', value:12},
+  { name: '汕尾', value:6},
+  { name: '江门', value:6},
+  { name: '沈阳', value:27},
+  { name: '河源山', value:69 },
+  { name: '泉州', value:2},
+  { name: '泰安', value:9},
+  { name: '泰州', value:3},
+  { name: '泸州', value:3},
+  { name: '洛阳', value: 3 },
+  { name: '济南', value: 45 },
+  { name: '济宁', value: 6 },
+  { name: '海口', value: 42 },
+  { name: '海阳', value: 6 },
+  { name: '淄博', value: 9 },
+  { name: '淮南', value: 15 },
+  { name: '深圳', value: 8729},
+  { name: '清远', value: 15},
+  { name: '温州', value: 3},
+  { name: '湖州', value: 9},
+  { name: '湛江', value: 6},
+  { name: '滨州', value: 6},
+  { name: '潍坊', value: 6},
+  { name: '潮州', value: 6},
+  { name: '烟台', value: 12},
+  { name: '玉林', value: 12},
+  { name: '珠海', value: 204},
+  { name: '甘孜藏族自治州', value: 3},
+  { name: '眉山', value: 3},
+  { name: '石家庄', value:81},
+  { name: '福州', value: 47},
+  { name: '秦皇岛', value:533},
+  { name: '绍兴', value: 3},
+  { name: '绵阳', value: 3},
+  { name: '聊城', value: 6},
+  { name: '肇庆', value: 6},
+  { name: '胶南', value: 6},
+  { name: '胶州', value: 6},
+  { name: '自贡', value: 3},
+  { name: '苏州', value: 302},
+  { name: '茂名', value: 3},
+  { name: '荆门', value: 3},
+  { name: '莱芜', value: 6},
+  { name: '莱西', value: 6},
+  { name: '菏泽', value: 6},
+  { name: '衡水', value: 15},
+  { name: '西安', value: 4726},
+  { name: '贵阳', value: 24},
+  { name: '资阳', value: 3},
+  { name: '赤峰', value: 385},
+  { name: '达州', value: 3},
+  { name: '运城', value: 135},
+  { name: '通辽', value: 470},
+  { name: '遂宁', value: 3},
+  { name: '邢台', value: 304},
+  { name: '邯郸', value: 449},
+  { name: '郑州', value: 27},
+  { name: '鄂尔多斯', value:75 },
+  { name: '重庆', value: 588},
+  { name: '锦州', value: 18},
+  { name: '长春', value: 36},
+  { name: '长沙', value: 57},
+  { name: '长治', value: 382},
+  { name: '阜新', value: 15},
+  { name: '阳江', value: 6},
+  { name: '阳泉', value: 501},
+  { name: '阿坝藏族羌族自治州', value: 3 },
+  { name: '雅安', value: 3},
+  { name: '青岛', value: 208},
+  { name: '韶关', value: 6},
+  { name: '香港', value: 18},
+  { name: '黄冈', value: 3},
+  { name: '黄岛', value: 6},
+  { name: '齐齐哈尔', value: 3}

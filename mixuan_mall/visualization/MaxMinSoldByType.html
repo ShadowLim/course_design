@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计各类商品近24小时销售量的最值</title>
+    <!-- 引入 echarts.min.js -->
+    <script src="./statics/echarts.min.js"></script>
+
+</head>
+<body>
+<div id="main" style="width: 700px;height:400px; float: left"></div>
+<script type="text/javascript">
+    var chartDom = document.getElementById('main');
+    var myChart = echarts.init(chartDom);
+
+    const MaxData = [152000, 0, 327000, 1818000];
+    const MinData = [1, 0, 1, 1];
+
+    const axisData = ['3C数码', '美妆', '生鲜', '运动户外'];
+    const data = axisData.map(function (item, i) {
+        return Math.round(Math.random() * 1000 * (i + 1));
+    });
+    const data1 = axisData.map(function (item, i) {
+        return Math.round(Math.random() * 100 * (i + 1));
+    });
+
+    const links = data.map(function (item, i) {
+        return {
+            source: i,
+            target: i + 1
+        };
+    });
+    links.pop();
+    option = {
+        title: {
+            text: '各类商品近24小时销售量的最值'
+        },
+        tooltip: {},
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: axisData
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                type: 'graph',
+                layout: 'none',
+                coordinateSystem: 'cartesian2d',
+                symbolSize: 30,
+                label: {
+                    show: true
+                },
+                edgeSymbol: ['circle', 'arrow'],
+                edgeSymbolSize: [1, 10],
+                data: MaxData,
+                links: links,
+                lineStyle: {
+                    color: '#2f4554'
+                }
+            },
+            {
+                type: 'graph',
+                layout: 'none',
+                coordinateSystem: 'cartesian2d',
+                symbolSize: 30,
+                label: {
+                    show: true
+                },
+                edgeSymbol: ['circle', 'arrow'],
+                edgeSymbolSize: [, 10],
+                data: MinData,
+                links: links,
+                lineStyle: {
+                    color: '#2f4554'
+                }
+            }
+        ]
+    };
+
+    option && myChart.setOption(option);
+    </script>
+
+</body>
+</html>

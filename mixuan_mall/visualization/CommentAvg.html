@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计各种商品类型的商品评价的平均值</title>
+    <!-- 引入 echarts.min.js -->
+    <script src="./statics/echarts.min.js"></script>
+
+</head>
+<body>
+<div id="main" style="width: 1500px;height:600px; float: left"></div>
+<script type="text/javascript">
+    var chartDom = document.getElementById('main');
+    var myChart = echarts.init(chartDom);
+
+    var ROOT_PATH = 'https://echarts.apache.org/examples';
+    const MyIcons = {
+        description_match: ROOT_PATH + '/data/asset/img/arrow-down.png',
+        logistics_service: ROOT_PATH + '/data/asset/img/arrow-up.png',
+        service_attitude: ROOT_PATH + '/data/asset/img/custom-gauge-panel.png'
+    };
+    const seriesLabel = {
+        show: true
+    };
+    option = {
+        title: {
+            text: '各种商品类型的商品评价均值'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            data: ['3C数码', '美妆', '生鲜', '运动户外'],
+            left: 500
+        },
+        grid: {
+            left: 125
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'value',
+            name: '评分',
+            axisLabel: {
+                formatter: '{value}'
+            }
+        },
+        yAxis: {
+            type: 'category',
+            inverse: true,
+            data: ['description_match', 'logistics_service', 'service_attitude'],
+            axisLabel: {
+                formatter: function (value) {
+                    return '{' + value + '| }\n{value|' + value + '}';
+                },
+                margin: 20,
+                rich: {
+                    value: {
+                        lineHeight: 30,
+                        align: 'center'
+                    },
+                    description_match: {
+                        height: 40,
+                        align: 'center',
+                        backgroundColor: {
+                            image: MyIcons.description_match
+                        }
+                    },
+                    logistics_service: {
+                        height: 40,
+                        align: 'center',
+                        backgroundColor: {
+                            image: MyIcons.logistics_service
+                        }
+                    },
+                    service_attitude: {
+                        height: 40,
+                        align: 'center',
+                        backgroundColor: {
+                            image: MyIcons.service_attitude
+                        }
+                    }
+                }
+            }
+        },
+        series: [
+            {
+                name: '3C数码',
+                type: 'bar',
+                data: [4.7575385985748895, 4.741463776722051, 4.5861045130641775],
+                label: seriesLabel,
+                markPoint: {
+                    symbolSize: 1,
+                    symbolOffset: [0, '50%'],
+                    label: {
+                        formatter: '{a|{a}\n}{b|{b} }{c|{c}}',
+                        backgroundColor: 'rgb(242,242,242)',
+                        borderColor: '#aaa',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        padding: [4, 10],
+                        lineHeight: 26,
+                        // shadowBlur: 5,
+                        // shadowColor: '#000',
+                        // shadowOffsetX: 0,
+                        // shadowOffsetY: 1,
+                        position: 'right',
+                        distance: 20,
+                        rich: {
+                            a: {
+                                align: 'center',
+                                color: '#fff',
+                                fontSize: 18,
+                                textShadowBlur: 2,
+                                textShadowColor: '#000',
+                                textShadowOffsetX: 0,
+                                textShadowOffsetY: 1,
+                                textBorderColor: '#333',
+                                textBorderWidth: 2
+                            },
+                            b: {
+                                color: '#333'
+                            },
+                            c: {
+                                color: '#ff8811',
+                                textBorderColor: '#000',
+                                textBorderWidth: 1,
+                                fontSize: 22
+                            }
+                        }
+                    },
+                    data: [
+                        { type: 'max', name: '3C数码 max score: ' },
+                        { type: 'min', name: '3C数码 min score: ' }
+                    ]
+                }
+            },
+            {
+                name: '美妆',
+                type: 'bar',
+                label: seriesLabel,
+                data: [4.733768656716389, 4.739953802416452, 0]
+            },
+            {
+                name: '生鲜',
+                type: 'bar',
+                label: seriesLabel,
+                data: [4.801912485700075, 4.728534271725801, 4.722839657282701]
+            },
+            {
+                name: '运动户外',
+                type: 'bar',
+                label: seriesLabel,
+                data: [4.7900792602377065, 4.677916116248317, 4.7097886393659]
+            }
+        ]
+    };
+    option && myChart.setOption(option);
+    </script>
+
+</body>
+</html>

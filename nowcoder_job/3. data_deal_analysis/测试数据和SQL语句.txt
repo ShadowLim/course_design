@@ -1,0 +1,860 @@
+-------------------------------------------------------------------------------------------------------------------------------------
+其他_1	深圳	本科	0.9	清博智能	0.5	7
+开发岗_1	南京	本科	3.5	华为	0.97	3
+其他_1	广州	本科	1.3	趣丸网络	0.98	4
+其他_1	北京/上海/深圳/成都/武汉/厦门	本科	1.3	美团	0.99	1
+开发岗_1	杭州	本科	2.75	光线云(杭州)科技有限公司	0.99	4
+
+
+
+select count(*) from (
+select id, pub_date, position, adress, education, salary, company, rate, duration
+from job 
+group by id, pub_date, position, adress, education, salary, company, rate, duration
+having count(*) = 1
+) t;
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+// 建表(外部表)
+create external table NCJob.job (
+id int,
+pub_date string,
+position string,
+adress string,
+education string,
+salary double,
+company string,
+rate double,
+duration int
+)
+row format delimited fields terminated by '\t'
+stored as textfile
+location '/NCJob/data';
+
+
+-- address字段 设置为 array 类型  --> 使用 explode()炸开将一列转换为多行
+
+create external table NCJob.job (
+id int,
+pub_date string,
+position string,
+adress array<string>,
+education string,
+salary double,
+company string,
+rate double,
+duration int
+)
+row format delimited fields terminated by '\t'
+stored as textfile
+location '/NCJob/data';
+
+
+-- 临时表（Hive）
+create table NCJob.job_tmp (
+id int,
+pub_date string,
+position string,
+adress string,
+education string,
+salary double,
+company string,
+rate double,
+duration int
+)
+row format delimited fields terminated by '\t'
+stored as textfile;
+
+
+-- 创建表（MySQL）
+create table job_tmp (
+id varchar(10),
+pub_date DATE,
+position varchar(30),
+adress varchar(255),
+education varchar(30),
+salary varchar(10),
+company varchar(50),
+rate varchar(10),
+duration varchar(10)
+)
+engine = InnoDB DEFAULT
+CHARSET = utf8;
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+// 查询
+
+-- 一共有 17986 条数据
+select count(id) from job;
+
+
+-- 一共有 4 种学历要求 （博士 硕士 本科 学历不限）
+select DISTINCT(education) from job;
+
+
+
+
+-- 统计学历各个比例（实习与非实习）
+
+-- 16218
+select COUNT(education)
+from job
+where education = '本科';
+
+-- 726
+select COUNT(education)
+from job
+where education = '硕士';
+
+-- 1042
+select COUNT(education)
+from job
+where education = '博士';
+
+========================================================================================================================================
+
+-- 2592
+select COUNT(education)
+from job
+where substr(position, -1, 2) = 1 and education = '本科';
+
+
+-- 13626
+select COUNT(education)
+from job
+where substr(position, -1, 2) = 0 and education = '本科';
+
+
+
+-- 342 
+select COUNT(education)
+from job
+where substr(position, -1, 2) = 1 and education = '硕士';
+
+
+-- 384
+select COUNT(education)
+from job
+where substr(position, -1, 2) = 0 and education = '硕士';
+
+
+-- 36
+select COUNT(education)
+from job
+where substr(position, -1, 2) = 1 and education = '博士';
+
+-- 15
+select COUNT(education)
+from job
+where substr(position, -1, 2) = 0 and education = '博士';
+
+
+-- 291 
+select COUNT(education)
+from job
+where substr(position, -1, 2) = 1 and education = '学历不限';
+
+
+-- 700
+select COUNT(education)
+from job
+where substr(position, -1, 2) = 0 and education = '学历不限';
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+-- 统计实习薪资前十(单位：千元/月)(或者用Hive的开窗函数 -- rank())
+
+select DISTINCT(salary)
+from job
+where substr(position, -1, 2) = 0
+order by salary desc
+limit 10;
+
+
+29.9
+19.5
+18.0
+15.0
+13.7
+13.5
+12.8
+12.2
+12.0
+11.9
+
+
+
+
+-- 统计非实习薪资前十(单位：万元/月)
+
+select DISTINCT(salary)
+from job
+where substr(position, -1, 2) = 1
+order by salary desc
+limit 10;
+
+
+
+6.3
+5.7
+5.6
+5.3
+5.0
+4.9
+4.7
+4.5
+4.4
+4.3
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+-- 统计实习薪资前十的公司(单位：千元/月)
+
+select distinct(company), salary
+from job
+where substr(position, -1, 2) = 0
+order by salary desc
+limit 10;
+
+9.8	好大夫在线
+9.8	字节跳动
+9.8	搜狐
+9.8	旺宏微电子
+9.8	星球在线
+9.8	爱钛技术
+9.8	美团
+9.8	链家上海分公司1895
+9.6	链家上海分公司1895
+9.5	平安科技
+
+-- 统非实习薪资前十的公司(单位：万元/月)
+
+select distinct(company), salary
+from job
+where substr(position, -1, 2) = 1
+order by salary desc
+limit 10;
+
+6.3	字节跳动
+5.7	字节跳动
+5.6	北京泰铼投资
+5.3	华为
+5.3	瀚博半导体(上海)有限公司
+5.0	字节跳动
+5.0	成都华为技术有限公司
+5.0	美团
+4.9	瀚博半导体(上海)有限公司
+4.7	SmartX
+
+
+
+
+-- 哪个岗位薪资多/少/平均  （扇形图）
+-- 实习
+select distinct(company), position, salary
+from job join 
+(
+select max(salary) as max_salary
+from job
+where position LIKE '开发%' and substr(position, -1, 2) = 0
+) t1 on 
+job.salary = t1.max_salary
+where job.position LIKE '开发%' and substr(job.position, -1, 2) = 0;
+
+
+-- 统计每个岗位的平均薪资
+
+-- round() 四舍五入
+
+select substr(position, 1, char_length(position) - 2) as pos, round(avg(salary), 2) as max_salary
+from job
+where substr(position, -1, 2) = 0
+GROUP BY position
+order by max_salary desc;
+
+-- 或者
+select substr(position, 1, char_length(position) - 2) as pos, round(sum(salary) / count(salary), 2) as max_salary
+from job
+where substr(position, -1, 2) = 0
+GROUP BY position
+order by max_salary desc;
+
+
+开发岗	8.31
+算法岗	8.31
+工程师	7.96
+数据岗	7.28
+其他	6.79
+运营岗	5.2
+策划岗	4.88
+培训岗	4.88
+设计岗	4.87
+
+-- 非实习
+
+
+select substr(position, 1, char_length(position) - 2) as pos, round(avg(salary), 2) as max_salary
+from job
+where substr(position, -1, 2) = 1
+GROUP BY position
+order by max_salary desc;
+
+-- 或者
+select substr(position, 1, char_length(position) - 2) as pos, round(sum(salary) / count(salary), 2) as max_salary
+from job
+where substr(position, -1, 2) = 1
+GROUP BY position
+order by max_salary desc;
+
+
+算法岗	2.15
+开发岗	2.12
+工程师	1.83
+数据岗	1.74
+设计岗	1.58
+其他	1.41
+策划岗	1.28
+运营岗	1.24
+培训岗	1.11
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
+-- 统计反馈率前十的公司
+
+-- 非实习
+select DISTINCT(rate)
+from job
+where substr(position, -1, 2) = 1
+order by rate desc
+limit 10;
+
+-- 实习
+select DISTINCT(rate)
+from job
+where substr(position, -1, 2) = 0
+order by rate desc
+limit 10;
+
+
+
+-- 平均反馈率
+
+-- 非实习： 0.8646979454155063
+select AVG(rate)
+from job
+where substr(position, -1, 2) = 1;
+
+
+-- 实习：0.9434974533105519
+select AVG(rate)
+from job
+where substr(position, -1, 2) = 0;
+
+
+
+-- 统计反馈时长(平均)前十的公司
+
+-- 实习（最长）51 43 31 29 28 28 26 24 23 22.7712 （欢乐互娱 博思软件 星制科技 中国电科 微软 博乐科技 哔哩哔哩 Neo 网易雷火 华为）
+select company, AVG(duration) as ad
+from job
+where substr(position, -1, 2) = 0
+group by company
+order by ad desc
+limit 10;
+
+-- 实习（最短）均为1小时（共有17家） （作业帮 360公司 喜马拉雅fm 苏州异格技术有限公司 北京正道量子科技有限公司 智拓视界
+--										猿辅导 上海科通实业有限公司 湖北优橙科技有限公司 rockey·洛凯）
+select company, AVG(duration) as ad
+from job
+where substr(position, -1, 2) = 0
+group by company
+order by ad desc
+limit 10;
+
+-- 非实习
+
+select company, AVG(duration) as ad
+from job
+where substr(position, -1, 2) = 1
+group by company
+order by ad asc
+limit 10;
+
+select company, AVG(duration) as ad
+from job
+where substr(position, -1, 2) = 1
+group by company
+order by ad desc
+limit 10;
+
+
+-- 平均反馈时长
+
+-- 实习： 7.2521
+select AVG(duration)
+from job
+where substr(position, -1, 2) = 0；
+-- 非实习; 6.1435
+
+select AVG(duration)
+from job
+where substr(position, -1, 2) = 1；
+
+
+-- 反馈时长最大的公司有哪些：
+
+-- 实习： 只有字节跳动（68天）
+select id, position, company, duration from job 
+where duration in (
+select max(duration) as maxDuration
+from job
+where substr(position, -1, 2) = 0
+); 
+
+
+-- 非实习：只有字节跳动（113天）
+select id, position, company, duration from job 
+where duration in (
+select max(duration) as maxDuration
+from job
+where substr(position, -1, 2) = 1
+); 
+
+
+-- 评估反馈时长：超过15天记为 反馈差
+
+-- 1922
+select count(duration) from job 
+where duration > 15 and substr(position, -1, 2) = 0; 
+
+-- 234
+
+select count(duration) from job 
+where duration > 15 and substr(position, -1, 2) = 1; 
+
+
+	-- 反馈差的公司（反馈时长）前10家公司
+	select company, count(duration) as badduration from job 
+	where duration > 15 and substr(position, -1, 2) = 1
+	group by company
+	order by badduration desc
+	limit 10; 
+
+	select company, count(duration) as badduration from job 
+	where duration > 15 and substr(position, -1, 2) = 0
+	group by company
+	order by badduration desc
+	limit 10; 
+
+	-- 反馈差的公司（反馈率低于90%）前10家公司
+	select company, count(rate) as badrate from job 
+	where rate < 0.9 and substr(position, -1, 2) = 1
+	group by company
+	order by badrate desc
+	limit 10; 
+
+	select company, count(rate) as badrate from job 
+	where rate < 0.9 and substr(position, -1, 2) = 0
+	group by company
+	order by badrate desc
+	limit 10; 
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+-- 每个月的岗位数量
+
+-- 7329
+select count(pub_date)
+from jobdata
+where month(pub_date) = 3 and substr(position, -1, 2) = 0; 
+
+-- 非实习 1666
+
+-- 4339
+select count(pub_date)
+from jobdata
+where month(pub_date) = 4 and substr(position, -1, 2) = 0;
+
+-- 非实习 963
+
+-- 3057
+select count(pub_date)
+from jobdata
+where month(pub_date) = 5 and substr(position, -1, 2) = 0;
+
+-- 非实习 632
+
+
+-- 统计就业岗位前10的城市
+	-- 每次查询表时 统计address字段中城市的数量（并且进行累加操作）
+
+	hivesql:（https://developer.aliyun.com/article/632189）
+
+	-- select split('xxx/yyy/zzz/aaa', '\/')[0] from job;
+
+
+	-- -- instr() 返回第二个参数在第一个参数中首次出现的位置
+	-- select instr('xxx/yyy/zzz/aaa', '/') 
+
+
+
+	select id, company, adress_name
+	from job 
+	LATERAL view explode(split(adress,'/'))  job_tmp  as adress_name
+	limit 10;
+
+
+	select id, count(t.adress_name)
+	from job as j on 
+	(
+	select id, company, adress_name
+	from job 
+	LATERAL view explode(split(adress,'/'))  job_tmp  as adress_name 
+	limit 10
+	) t
+	on j.id = t.id
+
+
+-- 一共 152 个城市有就业岗位的需求
+
+select count(*) from positioncount;
+
+① 统计前十的城市 （扇形图）北京 上海 ........
+select city, count 
+from positioncount 
+ORDER BY count desc
+limit 10;
+
+北京	13505
+上海	11687
+深圳	8729
+杭州	7556
+成都	7251
+广州	7058
+武汉	5510
+南京	5491
+厦门	5454
+西安	4726
+
+②
+
+三亚	476
+三明	3
+上海	11687
+东莞	85
+东营	6
+中山	6
+临沂	6
+丹东	90
+乌海	256
+乌鲁木齐	3
+乐山	3
+九江	9
+云浮	3
+佛山	18
+佳木斯	3
+保定	15
+兰州	15
+内江	3
+凉山彝族自治州	3
+包头	60
+北京	13505
+十堰	3
+南京	5491
+南充	3
+南宁	33
+南昌	15
+南沙开发区	3
+南通	54
+即墨	6
+厦门	5454
+台北	3
+台州	3
+合肥	27
+吉林	3
+哈尔滨	18
+唐山	329
+嘉兴	3
+城阳	6
+大同	281
+大连	24
+天津	73
+太原	84
+威海	6
+孝感	3
+宁波	19
+安顺	6
+宜宾	3
+巴中	3
+常州	39
+常德	3
+平度	6
+广元	3
+广安	3
+广州	7058
+张家口	63
+徐州	9
+德州	6
+德阳	3
+忻州	78
+惠州	6
+成都	7251
+扬州	36
+承德	92
+抚顺	78
+揭阳	6
+攀枝花	3
+无锡	104
+日照	6
+昆明	18
+晋中	30
+晋城	505
+朔州	60
+本溪	105
+杭州	7556
+枣庄	6
+柳州	9
+梅州	6
+武汉	5510
+汕头	12
+汕尾	6
+江门	6
+沈阳	27
+河源	6
+泉州	2
+泰安	9
+泰州	3
+泸州	3
+洛阳	3
+济南	45
+济宁	6
+海口	42
+海阳	6
+淄博	9
+淮南	15
+深圳	8729                    
+清远	15
+温州	3
+湖州	9
+湛江	6
+滨州	6
+潍坊	6
+潮州	6
+烟台	12
+玉林	12
+珠海	204
+甘孜藏族自治州	3
+眉山	3
+石家庄	81
+福州	47
+秦皇岛	533
+绍兴	3
+绵阳	3
+聊城	6
+肇庆	6
+胶南	6
+胶州	6
+自贡	3
+苏州	302
+茂名	3
+荆门	3
+莱芜	6
+莱西	6
+菏泽	6
+衡水	15
+西安	4726
+贵阳	24
+资阳	3
+赤峰	385
+达州	3
+运城	135
+通辽	470
+遂宁	3
+邢台	304
+邯郸	449
+郑州	27
+鄂尔多斯	75
+重庆	588
+锦州	18
+长春	36
+长沙	57
+长治	382
+阜新	15
+阳江	6
+阳泉	501
+阿坝藏族羌族自治州	3
+雅安	3
+青岛	208
+韶关	6
+香港	18
+黄冈	3
+黄岛	6
+齐齐哈尔	3
+
+
+-- 首页模块
+	-- 统计一线大厂的岗位情况
+	
+	-- 实习
+	-- 字节跳动
+
+	select substr(position, 1, char_length(position) - 2) as pos, count(position) as cnt
+	from job
+	where substr(position, -1, 2) = 0 and company = '字节跳动'
+	GROUP BY position
+	ORDER BY cnt desc;
+
+	开发岗	2345
+	运营岗	1215
+	其他	1034
+	数据岗	858
+	算法岗	631
+	工程师	105
+	策划岗	15
+
+
+	-- 阿里巴巴
+select substr(position, 1, char_length(position) - 2) as pos, count(position) as cnt
+from job
+where substr(position, -1, 2) = 0 and company like '阿里巴巴'
+GROUP BY position
+ORDER BY cnt desc;
+
+其他	64
+工程师	15
+运营岗	15
+算法岗	15
+
+
+-- 华为
+select substr(position, 1, char_length(position) - 2) as pos, count(position) as cnt
+from job
+where substr(position, -1, 2) = 0 and company like '华为'
+GROUP BY position
+ORDER BY cnt desc;
+
+开发岗	88
+数据岗	15
+其他	15
+
+-- 百度
+select substr(position, 1, char_length(position) - 2) as pos, count(position) as cnt
+from job
+where substr(position, -1, 2) = 0 and company like '百度'
+GROUP BY position
+ORDER BY cnt desc;
+
+其他	45
+工程师	31
+算法岗	15
+开发岗	15
+
+-- 美团
+select substr(position, 1, char_length(position) - 2) as pos, count(position) as cnt
+from job
+where substr(position, -1, 2) = 0 and company like '美团'
+GROUP BY position
+ORDER BY cnt desc;
+
+其他	701
+开发岗	626
+工程师	285
+运营岗	272
+算法岗	225
+设计岗	210
+数据岗	183
+培训岗	75
+
+
+---------------------------------------------------------------------------------------------------------------
+
+	-- 非实习
+	-- 字节跳动
+	select substr(position, 1, char_length(position) - 2) as pos, count(position) as cnt
+	from job
+	where substr(position, -1, 2) = 1 and company = '字节跳动'
+	GROUP BY position
+	ORDER BY cnt desc;
+	开发岗	212
+	算法岗	45
+	数据岗	44
+	其他	39
+	工程师	33
+	运营岗	12
+
+	-- 阿里巴巴
+	select substr(position, 1, char_length(position) - 2) as pos, count(position) as cnt
+from job
+where substr(position, -1, 2) = 1 and company like '阿里巴巴'
+GROUP BY position
+ORDER BY cnt desc;
+
+其他	18
+工程师	3
+开发岗	3
+
+
+-- 华为
+select substr(position, 1, char_length(position) - 2) as pos, count(position) as cnt
+from job
+where substr(position, -1, 2) = 1 and company like '华为'
+GROUP BY position
+ORDER BY cnt desc;
+
+开发岗	165
+工程师	51
+其他	21
+算法岗	20
+数据岗	18
+
+
+
+-- 百度
+select substr(position, 1, char_length(position) - 2) as pos, count(position) as cnt
+from job
+where substr(position, -1, 2) = 1 and company like '百度'
+GROUP BY position
+ORDER BY cnt desc;
+
+其他	6
+工程师	3
+	
+	-- 美团
+	select substr(position, 1, char_length(position) - 2) as pos, count(position) as cnt
+from job
+where substr(position, -1, 2) = 1 and company like '美团'
+GROUP BY position
+ORDER BY cnt desc;
+
+其他	63
+开发岗	24
+算法岗	6
+数据岗	6
+设计岗	3
+运营岗	3
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
+-- 可视化：获取MySQL数据 ---> Echarts
+
+
+
+
+
+
+
+
+
+
+

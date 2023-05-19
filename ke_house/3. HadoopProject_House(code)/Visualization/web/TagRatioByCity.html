@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计各个城市二手房标签的各类比例</title>
+    <!-- 引入 echarts.min.js -->
+    <script src="static/echarts/echarts.min.js"></script>
+</head>
+<body>
+
+<!--上海-必看好房	16.93%-->
+<!--上海-房主自荐	16.06%-->
+<!--上海-新上	10.35%-->
+<!--上海-未知标签	56.66%-->
+<!--北京-必看好房	76.14%-->
+<!--北京-房主自荐	4.74%-->
+<!--北京-新上	1.45%-->
+<!--北京-未知标签	17.66%-->
+<!--广州-必看好房	13.00%-->
+<!--广州-房主自荐	3.26%-->
+<!--广州-新上	17.56%-->
+<!--广州-未知标签	66.17%-->
+<!--深圳-必看好房	9.22%-->
+<!--深圳-房主自荐	2.18%-->
+<!--深圳-新上	4.63%-->
+<!--深圳-未知标签	83.97%-->
+
+<div id="main" style="width: 600px;height:400px; float: left"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'), 'dark');
+    // 指定图表的配置项和数据
+    var option;
+
+    const seriesLabel = {
+        show: true
+    };
+    option = {
+        title: {
+            text: '统计各个城市二手房标签的各类比例'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            top: '7%',
+            data: ['必看好房', '房主自荐', '新上', '未知标签']
+        },
+        grid: {
+            left: 100
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'value',
+            name: '比例',
+            axisLabel: {
+                formatter: '{value}'
+            }
+        },
+        yAxis: {
+            type: 'category',
+            inverse: true,
+            data: ['上海', '北京', '广州', '深圳'],
+            axisLabel: {
+                margin: 20,
+                rich: {
+                    value: {
+                        lineHeight: 30,
+                        align: 'center'
+                    },
+                    上海: {
+                        height: 40,
+                        align: 'center',
+                    },
+                    北京: {
+                        height: 40,
+                        align: 'center',
+                    },
+                    广州: {
+                        height: 40,
+                        align: 'center',
+                    },
+                    深圳: {
+                        height: 40,
+                        align: 'center',
+
+                    }
+                }
+            }
+        },
+        series: [
+            {
+                name: '必看好房',
+                type: 'bar',
+                data: [0.1693, 0.7614, 0.13, 0.0922],
+                label: seriesLabel,
+                markPoint: {
+                    symbolSize: 1,
+                    symbolOffset: [0, '50%'],
+                    label: {
+                        formatter: '{a|{a}\n}{b|{b} }{c|{c}}',
+                        backgroundColor: 'rgb(242,242,242)',
+                        borderColor: '#aaa',
+                        borderWidth: 1,
+                        borderRadius: 4,
+                        padding: [4, 10],
+                        lineHeight: 26,
+                        // shadowBlur: 5,
+                        // shadowColor: '#000',
+                        // shadowOffsetX: 0,
+                        // shadowOffsetY: 1,
+                        position: 'right',
+                        distance: 20,
+                        rich: {
+                            a: {
+                                align: 'center',
+                                color: '#fff',
+                                fontSize: 18,
+                                textShadowBlur: 2,
+                                textShadowColor: '#000',
+                                textShadowOffsetX: 0,
+                                textShadowOffsetY: 1,
+                                textBorderColor: '#333',
+                                textBorderWidth: 2
+                            },
+                            b: {
+                                color: '#333'
+                            },
+                            c: {
+                                color: '#ff8811',
+                                textBorderColor: '#000',
+                                textBorderWidth: 1,
+                                fontSize: 22
+                            }
+                        }
+                    },
+                    data: [
+                        { type: 'max', name: 'max days: ' },
+                        { type: 'min', name: 'min days: ' }
+                    ]
+                }
+            },
+            {
+                name: '房主自荐',
+                type: 'bar',
+                label: seriesLabel,
+                data: [0.1606, 0.0474, 0.0326, 0.0218]
+            },
+            {
+                name: '新上',
+                type: 'bar',
+                label: seriesLabel,
+                data: [0.1035, 0.0145, 0.1756, 0.0463]
+            },
+            {
+                name: '未知标签',
+                type: 'bar',
+                label: seriesLabel,
+                data: [0.5666, 0.1766, 0.6617, 0.8397]
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    option && myChart.setOption(option);
+</script>
+
+
+</body>
+</html>

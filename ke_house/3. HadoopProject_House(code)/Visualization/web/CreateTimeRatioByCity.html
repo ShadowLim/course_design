@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计各个建造时间段的二手房数量</title>
+    <!-- 引入 echarts.min.js -->
+    <script src="static/echarts/echarts.min.js"></script>
+
+</head>
+<body>
+
+<!--上海	小于10年	195-->
+<!--北京	小于10年	196-->
+<!--广州	小于10年	405-->
+<!--深圳	小于10年	758-->
+
+<!--上海	10~15年	398-->
+<!--北京	10~15年	302-->
+<!--广州	10~15年	371-->
+<!--深圳	10~15年	534-->
+
+<!--上海	15~20年	430-->
+<!--北京	15~20年	465-->
+<!--广州	15~20年	344-->
+<!--深圳	15~20年	782-->
+
+<!--上海	20~30年	1147-->
+<!--北京	20~30年	551-->
+<!--广州	20~30年	792-->
+<!--深圳	20~30年	658-->
+
+<!--上海	30~40年	551-->
+<!--北京	30~40年	329-->
+<!--广州	30~40年	94-->
+<!--深圳	30~40年	129-->
+
+<!--上海	40~50年	119-->
+<!--北京	40~50年	99-->
+<!--广州	40~50年	7-->
+<!--深圳	40~50年	2-->
+
+<!--上海	超过50年	22-->
+<!--北京	超过50年	8-->
+<!--广州	超过50年	2-->
+
+<div id="main" style="width: 600px;height:400px; float: left"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'), 'dark');
+    // 指定图表的配置项和数据
+    var option;
+
+    option = {
+        title: {
+            text: '统计各个建造时间段的二手房比例',
+            subtext: '此处不统计未知建造年份的二手房'
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            top: '7%',
+            right: '5%',
+            data: ["上海","北京","广州","深圳"]
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        xAxis: {
+            type: 'category',
+            name: '区间',
+            boundaryGap: false,
+            data: ['小于10年', '10~15年', '15~20年', '20~30年', '30~40年', '40~50年', '超过50年']
+        },
+        yAxis: {
+            type: 'value',
+            name: '数量'
+        },
+        grid: {
+            top: '20%'
+        },
+        series: [
+            {
+                name: '上海',
+                type: 'line',
+                stack: 'Total',
+                data: [195, 398, 430, 1147, 551, 119, 22]
+            },
+            {
+                name: '北京',
+                type: 'line',
+                stack: 'Total',
+                data: [196, 302, 465, 551, 329, 99, 8]
+            },
+            {
+                name: '广州',
+                type: 'line',
+                stack: 'Total',
+                data: [405, 371, 344, 792, 94, 7, 2]
+            },
+            {
+                name: '深圳',
+                type: 'line',
+                stack: 'Total',
+                data: [758, 534, 782, 658, 129, 2, 0]
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+
+
+</body>
+</html>

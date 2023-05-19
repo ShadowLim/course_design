@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>统计各个城市各个楼层的平均价格</title>
+    <!-- 引入 echarts.min.js -->
+    <script src="static/echarts/echarts.min.js"></script>
+
+</head>
+<body>
+
+<!--上海    中楼层  6.558067143940795-->
+<!--上海    低楼层  6.526130548560414-->
+<!--上海    高楼层  6.413051004426704-->
+<!--北京    中楼层  6.793251767738759-->
+<!--北京    低楼层  6.834817416267729-->
+<!--北京    地下室  7.8998778998779-->
+<!--北京    底层    6.896333047472122-->
+<!--北京    顶层    7.077389474267064-->
+<!--北京    高楼层  6.962124638725149-->
+<!--广州    中楼层  3.7183773994723497-->
+<!--广州    低楼层  3.8123485536451747-->
+<!--广州    地下室  3.2927350427350426-->
+<!--广州    高楼层  3.800820253577766-->
+<!--深圳    中楼层  6.039007961759094-->
+<!--深圳    低楼层  6.085307049389125-->
+<!--深圳    高楼层  6.167436216151663-->
+
+<div id="main" style="width: 600px;height:400px; float: left"></div>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'), 'dark');
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: '统计各个城市各个楼层的平均价格'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: {
+            top: "7%",
+            left: '24%',
+            data: ['中楼层', '低楼层', '地下室', '底层', '顶层', '高楼层']
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        grid: {
+            left: '7%',
+            right: '10%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                name: '城市',
+                boundaryGap: false,
+                data: ['上海', '北京', '广州', '深圳']
+            }
+        ],
+        yAxis: [
+            {
+                name: '平均价格（万元/平米）',
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                name: '中楼层',
+                type: 'line',
+                stack: 'Total',
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [6.558067143940795,
+                    6.793251767738759,
+                    3.7183773994723497,
+                    6.039007961759094
+                    ]
+            },
+            {
+                name: '低楼层',
+                type: 'line',
+                stack: 'Total',
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [6.526130548560414,
+                    6.834817416267729,
+                    3.8123485536451747,
+                    6.085307049389125]
+            },
+            {
+                name: '地下室',
+                type: 'line',
+                stack: 'Total',
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [0,
+                    7.8998778998779,
+                    3.2927350427350426,
+                    0]
+            },
+            {
+                name: '底层',
+                type: 'line',
+                stack: 'Total',
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [0,
+                    6.896333047472122,
+                    0,
+                    0]
+            },
+            {
+                name: '顶层',
+                type: 'line',
+                stack: 'Total',
+                label: {
+                    show: true,
+                    position: 'top'
+                },
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [0,
+                    7.077389474267064,
+                    0,
+                    0]
+            },
+            {
+                name: '高楼层',
+                type: 'line',
+                stack: 'Total',
+                label: {
+                    show: true,
+                    position: 'top'
+                },
+                areaStyle: {},
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [6.413051004426704,
+                    6.962124638725149,
+                    3.800820253577766,
+                    6.167436216151663]
+            }
+
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+
+
+</body>
+</html>

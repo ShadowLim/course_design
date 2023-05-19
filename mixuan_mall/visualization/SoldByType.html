@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>不同类型商品的平均已售量</title>
+    <!-- 引入 echarts.min.js -->
+    <script src="./statics/echarts.min.js"></script>
+
+</head>
+<body>
+<div id="main" style="width: 600px;height:400px; float: left"></div>
+<script type="text/javascript">
+    var chartDom = document.getElementById('main');
+    var myChart = echarts.init(chartDom, 'dark');
+    var option = {
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            top: '7%',
+            left: 'center'
+        },
+        title: {
+            text: '不同类型商品的平均已售量',
+            left:'50%',
+            textAlign:'center'
+        },
+        series: [
+            {
+                name: '商品类型',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                itemStyle: {
+                    borderRadius: 10,
+                    borderColor: '#fff',
+                    borderWidth: 2
+                },
+                label: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: 40,
+                        fontWeight: 'bold'
+                    }
+                },
+                labelLine: {
+                    show: false
+                },
+                data: [
+                    { value: 9197, name: '3C数码' },
+                    { value: 33191, name: '美妆' },
+                    { value: 12179, name: '生鲜' },
+                    { value: 27974, name: '运动户外' }
+                ]
+            }
+        ]
+    };
+
+    option && myChart.setOption(option);
+    </script>
+
+</body>
+</html>
